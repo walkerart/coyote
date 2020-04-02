@@ -1,7 +1,7 @@
 default: &default
   adapter: postgresql
   pool: <%= Credentials.fetch(:app, :database_pool) { 5 }.to_i %>
-  url: <%= Credentials.fetch(:app, :database_url) { ENV.fetch("DATABASE_URL", "postgres://coyote_#{Rails.env}:5432") } %>
+  url: <%= Credentials.fetch(:app, :database_url) { ENV.fetch("DATABASE_URL", "postgres://localhost:5432/") } %>
 
 development:
   <<: *default

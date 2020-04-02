@@ -44,10 +44,11 @@ services:
 
   test:
     <<: *rails
-    command: ./bin/docker_entrypoint bundle exec rails db:test:prepare db:migrate spec
+    command: ./bin/docker_entrypoint bundle exec rails db:test:prepare spec
     environment:
       DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL: "true"
       DATABASE_HOST: db
+      DATABASE_URL: postgres://db/coyote_test:5432
       NODE_ENV: test
       RAILS_ENV: test
       WEB_CONCURRENCY: 1
