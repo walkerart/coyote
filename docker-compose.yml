@@ -4,31 +4,6 @@ volumes:
   postgres_data: {}
 
 services:
-  app: &app
-    build:
-      context: .
-    depends_on:
-      - db
-    environment: &environment
-      BOOTSNAP_CACHE_DIR: /bundle/bootsnap
-      DATABASE_HOST: db
-      DATABASE_URL: postgres://postgres:postgres@db:5432
-      NODE_ENV: ${NODE_ENV:-development}
-      RAILS_ENV: ${RAILS_ENV:-development}
-      WEBPACKER_DEV_SERVER_HOST: webpacker
-      WEB_CONCURRENCY: 1
-    entrypoint: ./bin/docker_entrypoint bundle exec
-    tmpfs:
-      - /tmp
-    volumes:
-      - .:/coyote:cached
-      - bundle:/usr/local/bundle
-      - node_modules:/coyote/node_modules
-      - packs:/coyote/public/packs
-      - rails_cache:/coyote/tmp/cache
-    stdin_open: true
-    tty: true
-
   db:
     image: postgres:11-alpine
     environment:
@@ -39,19 +14,43 @@ services:
     volumes:
       - postgres:/var/lib/postgresql/data
 
-  rails:
-    <<: *app
-    command: rails server -b 0.0.0.0
+  web: &rails
+    build:
+      context: .
+      args:
+        bundle_without: ""
+    command: bundle exec rails server -b 0.0.0.0
+    depends_on:
+      - db
+    environment:
+      BOOTSNAP_CACHE_DIR: /bundle/bootsnap
+      DATABASE_HOST: db
+      NODE_ENV: ${NODE_ENV:-development}
+      RAILS_ENV: ${RAILS_ENV:-development}
+      WEBPACKER_DEV_SERVER_HOST: webpacker
+      WEB_CONCURRENCY: 1
     ports:
       - 3000:3000
+    stdin_open: true
+    tmpfs:
+      - /tmp
+    tty: true
+    volumes:
+      - .:/coyote:cached
+      - bundle:/usr/local/bundle
+      - node_modules:/coyote/node_modules
+      - packs:/coyote/public/packs
+      - rails_cache:/coyote/tmp/cache
 
-  rspec:
-    <<: *app
-    command: rails db:create db:environment:set db:test:prepare db:migrate spec
+  test:
+    <<: *rails
+    command: ./bin/docker_entrypoint bundle exec rails db:test:prepare db:migrate spec
     environment:
-      <<: *environment
       DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL: "true"
+      DATABASE_HOST: db
+      NODE_ENV: test
       RAILS_ENV: test
+      WEB_CONCURRENCY: 1
 
 volumes:
   bundle:

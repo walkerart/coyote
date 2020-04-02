@@ -16,12 +16,21 @@ class Credential < OpenStruct
     value
   end
 
-  def fetch(*keys, &block)
+  def fetch(*keys)
     dig(*keys) || yield
   end
 end
 
-root_config = Rails.application.encrypted("config/credentials.yml.enc", key_path: "config/master.key", env_key: "RAILS_ROOT_KEY").config.symbolize_keys
+# Credentials are applied in the following order:
+# 1. Base
+# 2. RAILS_ENV specific
+# 3. Staging specific (if a STAGING flag is given)
+base_config = Rails.application.encrypted("config/credentials.yml.enc", key_path: "config/master.key", env_key: "RAILS_BASE_KEY").config.symbolize_keys
 env_config = Rails.application.credentials.config.symbolize_keys
+staging_config = ENV["STAGING"] ?
+  Rails.application.encrypted("config/credentials/staging.yml.enc", key_path: "config/credentials/staging.key", env_key: "RAILS_STAGING_KEY").config.symbolize_keys :
+  {}
 
-Credentials = Credential.new(root_config.deep_merge(env_config))
+env_config = env_config.deep_merge(staging_config)
+
+Credentials = Credential.new(base_config.deep_merge(env_config))

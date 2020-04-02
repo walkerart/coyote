@@ -1,7 +1,7 @@
 default: &default
   adapter: postgresql
-  pool: <%= (ENV["DB_POOL_SIZE"] || ENV["THREADS"] || 5).to_i %>
-  url: <%= Credentials.fetch(:database_url) { ENV["DATABASE_URL"] } %>
+  pool: <%= Credentials.fetch(:app, :database_pool) { 5 }.to_i %>
+  url: <%= Credentials.fetch(:app, :database_url) { ENV.fetch("DATABASE_URL", "postgres://coyote_#{Rails.env}:5432") } %>
 
 development:
   <<: *default

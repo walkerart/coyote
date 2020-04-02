@@ -24,3 +24,7 @@ pickle-email-*.html
 /config/application.yml
 
 /config/master.key
+
+/config/credentials/production.key
+
+/config/credentials/staging.key

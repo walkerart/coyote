@@ -1,3 +1,4 @@
+# TODO: Update this to match the new Docker / GCS workflow
 namespace :deploy do
   task default: %(production)
 
@@ -9,12 +10,12 @@ namespace :deploy do
     end
 
     unless system("git diff --exit-code")
-      abort <<-MSG
-You have uncommitted changes or unpushed commits. Please stash changes or push commits before deploying!
-You can disable this warning (at your peril) by running this command with SKIP_CLEAN_CHECK set to true:
+      abort <<~MSG
+        You have uncommitted changes or unpushed commits. Please stash changes or push commits before deploying!
+        You can disable this warning (at your peril) by running this command with SKIP_CLEAN_CHECK set to true:
 
-SKIP_CLEAN_CHECK=true bundle exec rake deploy
-MSG
+        SKIP_CLEAN_CHECK=true bundle exec rake deploy
+      MSG
     end
 
     unless system("git diff master..origin/master --exit-code")
@@ -28,4 +29,4 @@ MSG
   end
 end
 
-task deploy: %w(deploy:production)
+task deploy: %w[deploy:production]

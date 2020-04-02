@@ -30,7 +30,6 @@ gem "pundit"
 gem "rake"
 gem "ransack"
 gem "redcarpet"
-gem "rollbar"
 gem "sass-rails"
 gem "simple_form"
 gem "slim-rails"
@@ -90,6 +89,7 @@ end
 
 group :production do
   gem "rails_12factor"
+  gem "rollbar"
 end
 
 # TODO: Comment this back in if you need to reactivate Scavenger Hunt

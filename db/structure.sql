@@ -2059,6 +2059,14 @@ ALTER TABLE ONLY public.representations
 
 
 --
+-- Name: active_storage_attachments fk_rails_c3b3935057; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.active_storage_attachments
+    ADD CONSTRAINT fk_rails_c3b3935057 FOREIGN KEY (blob_id) REFERENCES public.active_storage_blobs(id);
+
+
+--
 -- Name: representations fk_rails_d040284b2b; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2194,6 +2202,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180928203337'),
 ('20181003184315'),
 ('20181003222901'),
-('20181005234836');
+('20181005234836'),
+('20200402174009');
 
 

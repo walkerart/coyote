@@ -1,6 +1,6 @@
 <% if Rails.env.production? %>
 var _rollbarConfig = {
-    accessToken: "c5739e88024146c09a5667d96956658e",
+    accessToken: <%= Credentials.dig(:rollbar, :access_token).to_json %>,
     captureUncaught: true,
     payload: {
         environment: "production"
