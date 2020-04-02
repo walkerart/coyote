@@ -10,25 +10,25 @@ class ScavengerHunt::Location < ScavengerHunt::ApplicationRecord
     # Create a corresponding location when an organization is created
     meta = [
       {
-        title: ScavengerHunt::Game::ANSWER_METUM_NAME,
+        title:        ScavengerHunt::Game::ANSWER_METUM_NAME,
         instructions: "A scavenger hunt answer that users must enter when they have found the clue",
       },
       {
-        title: ScavengerHunt::Game::CLUE_METUM_NAME,
+        title:        ScavengerHunt::Game::CLUE_METUM_NAME,
         instructions: "A scavenger hunt clue informing players what they're searching for",
       },
       {
-        title: ScavengerHunt::Game::CLUE_POSITION_METUM_NAME,
+        title:        ScavengerHunt::Game::CLUE_POSITION_METUM_NAME,
         instructions: "The order of a clue within the game. Set text to a lower number to move the clue up front.",
       },
       {
-        title: ScavengerHunt::Game::HINT_METUM_NAME,
+        title:        ScavengerHunt::Game::HINT_METUM_NAME,
         instructions: "A scavenger hunt hint helping players to identify a difficult clue",
       },
       {
-        title: ScavengerHunt::Game::QUESTION_METUM_NAME,
+        title:        ScavengerHunt::Game::QUESTION_METUM_NAME,
         instructions: "The prompt instructing a player on how to enter an answer to a clue. Defaults to 'I think it is...' if nothing is provided on this resource.",
-      }
+      },
     ]
 
     location = ScavengerHunt::Location.find_or_initialize_by(organization: self)
@@ -37,10 +37,10 @@ class ScavengerHunt::Location < ScavengerHunt::ApplicationRecord
 
     meta.each do |attributes|
       metum = Metum.find_or_initialize_by(
-        title: attributes[:title],
-        organization: self
+        title:        attributes[:title],
+        organization: self,
       )
-      metum.update_attributes!(attributes)
+      metum.update!(attributes)
     end
   end
 
@@ -51,5 +51,4 @@ class ScavengerHunt::Location < ScavengerHunt::ApplicationRecord
   def representations_by_metum(metum_name)
     representations.with_metum_named(metum_name)
   end
-
 end

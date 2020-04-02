@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 if [[ $COYOTE_REVIEW_APP != "true" ]]
 then
-  if [[ $RAILS_ENV == "staging" ]]
+  if [[ -z $STAGING ]]
   then
     pg_dump -c -O -x $CLONE_DATABASE_URL | psql $DATABASE_URL
   fi

@@ -10,7 +10,7 @@ Coyote::Application.configure do
   config.eager_load = false
 
   # Show full error reports and disable caching.
-  config.consider_all_requests_local       = true
+  config.consider_all_requests_local = true
   config.action_controller.perform_caching = false
 
   # Don't care if the mailer can't send.
@@ -24,17 +24,16 @@ Coyote::Application.configure do
   # This option may cause significant delays in view rendering with a large
   # number of complex assets.
 
+  config.assets.digest = false
   config.assets.prefix = "/dev-assets"
   config.assets.raise_production_errors = true
-  config.assets.precompile << %w( coyote_consumer.js)
-  config.assets.digest = false
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
   config.active_support.deprecation = :stderr # :raise
 
-  logger           = ActiveSupport::Logger.new(STDOUT)
+  logger = ActiveSupport::Logger.new(STDOUT)
   logger.formatter = config.log_formatter
-  config.logger    = ActiveSupport::TaggedLogging.new(logger)
+  config.logger = ActiveSupport::TaggedLogging.new(logger)
 
   # Sprockets debugging
   # config.assets.debug = false
@@ -46,6 +45,6 @@ Coyote::Application.configure do
   # })
   # config.assets.css_compressor = :sass
 
-  #config.action_controller.perform_caching = true
+  # config.action_controller.perform_caching = true
   config.active_storage.service = :local
 end

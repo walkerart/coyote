@@ -9,7 +9,7 @@ Rails.application.configure do
   config.eager_load = true
 
   # Full error reports are disabled and caching is turned on.
-  config.consider_all_requests_local       = false
+  config.consider_all_requests_local = false
   config.action_controller.perform_caching = true
 
   # Enable Rack::Cache to put a simple HTTP cache in front of your application
@@ -21,9 +21,9 @@ Rails.application.configure do
   config.public_file_server.enabled = false
 
   # Compress JavaScripts and CSS.
-  #https://github.com/mishoo/UglifyJS2/issues/328
+  # https://github.com/mishoo/UglifyJS2/issues/328
   config.assets.js_compressor = Uglifier.new(
-    output: { ascii_only: true, quote_keys: true }
+    output: {ascii_only: true, quote_keys: true},
   )
   config.assets.css_compressor = :sass
 
@@ -43,7 +43,7 @@ Rails.application.configure do
   # config.action_cable.allowed_request_origins = [ 'http://example.com', /http:\/\/example.*/ ]
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-   config.force_ssl = true
+  config.force_ssl = true
 
   config.log_level = :info
 
@@ -54,13 +54,12 @@ Rails.application.configure do
   # config.logger = ActiveSupport::TaggedLogging.new(SyslogLogger.new)
 
   # Use a different cache store in production.
-  #config.cache_store = :redis_store, {
-    #host: "",
-    #port: 6379,
-    #expires_in: 90.minutes ,
-    #namespace: 'cache'
-  #}
-
+  # config.cache_store = :redis_store, {
+  # host: "",
+  # port: 6379,
+  # expires_in: 90.minutes ,
+  # namespace: 'cache'
+  # }
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
   # config.action_controller.asset_host = "http://assets.example.com"
@@ -68,8 +67,6 @@ Rails.application.configure do
 
   # Precompile additional assets.
   # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
-  config.assets.precompile += %w(coyote_producer.js coyote_consumer.js coyote_bookmarklet.js coyote_bookmarklet.css)
-  config.assets.precompile << /\.(?:svg|eot|woff|ttf)$/
   config.assets.initialize_on_precompile = false
   config.assets.prefix = "/assets"
 
@@ -84,9 +81,9 @@ Rails.application.configure do
   # Send deprecation notices to registered listeners.
   config.active_support.deprecation = :notify
 
-  logger           = ActiveSupport::Logger.new(STDOUT)
+  logger = ActiveSupport::Logger.new(STDOUT)
   logger.formatter = config.log_formatter
-  config.logger    = ActiveSupport::TaggedLogging.new(logger)
+  config.logger = ActiveSupport::TaggedLogging.new(logger)
 
   config.active_storage.service = :amazon
 end

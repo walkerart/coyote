@@ -118,7 +118,6 @@ Layout/SpaceAroundOperators:
     - 'app/models/description.rb'
     - 'app/models/user.rb'
     - 'config/environments/production.rb'
-    - 'config/environments/staging.rb'
     - 'config/environments/test.rb'
     - 'config/initializers/secret_token.rb'
     - 'lib/tasks/websites/update.rake'
@@ -219,7 +218,6 @@ Layout/SpaceInsidePercentLiteralDelimiters:
     - 'config/application.rb'
     - 'config/environments/development.rb'
     - 'config/environments/production.rb'
-    - 'config/environments/staging.rb'
 
 # Offense count: 8
 # Cop supports --auto-correct.
@@ -249,12 +247,6 @@ Lint/AmbiguousBlockAssociation:
     - 'lib/coyote/strategies/mca.rb'
 
 # Offense count: 1
-# Configuration parameters: AllowSafeAssignment.
-Lint/AssignmentInCondition:
-  Exclude:
-    - 'bin/spring'
-
-# Offense count: 1
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyleAlignWith, SupportedStylesAlignWith, AutoCorrect.
 # SupportedStylesAlignWith: start_of_line, def
@@ -271,7 +263,6 @@ Lint/DeprecatedClassMethods:
 # Offense count: 2
 Lint/HandleExceptions:
   Exclude:
-    - 'bin/cucumber'
     - 'bin/rspec'
 
 # Offense count: 1
@@ -556,10 +547,8 @@ Style/PercentLiteralDelimiters:
     - 'config/application.rb'
     - 'config/deploy.rb'
     - 'config/deploy/production.rb'
-    - 'config/deploy/staging.rb'
     - 'config/environments/development.rb'
     - 'config/environments/production.rb'
-    - 'config/environments/staging.rb'
     - 'lib/tasks/deploy.rake'
     - 'spec/requests/images_spec.rb'
 

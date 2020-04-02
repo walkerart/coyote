@@ -1,10 +1,9 @@
 class ScavengerHunt::GamesController < ScavengerHunt::ApplicationController
-
   before_action :find_game, except: :new
 
   def finish
     if params[:confirm]
-      @game.update_attributes(ended_at: Time.now)
+      @game.update(ended_at: Time.zone.now)
       redirect_to params[:confirm] == "skip" ? locations_path : finished_game_path(@game)
     end
   end
@@ -26,9 +25,9 @@ class ScavengerHunt::GamesController < ScavengerHunt::ApplicationController
 
   helper_method def all_locations_played?
     return @all_locations_played if defined? @all_locations_played
-    @all_locations_played = ScavengerHunt::Location.all.all? do |location|
+    @all_locations_played = ScavengerHunt::Location.all.all? { |location|
       location.played?(current_player)
-    end
+    }
   end
 
   def create_player!

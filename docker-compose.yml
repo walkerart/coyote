@@ -1,35 +1,62 @@
-version: '3'
+version: "3"
+
+volumes:
+  postgres_data: {}
+
 services:
-  web:
-    build: .
-    ports:
-      - 3000:3000
-    environment:
-      COYOTE_DEV_DATABASE_URL: postgres://postgres:docker@db:5432/coyote_development
-      RAILS_ENV: development
-      SECRET_KEY_BASE: DEV_ONLY_09f0f5a7621eb1835061d53c0f1ebc105d4104058f5c8d42827e48abe133dbbff85b63a4b40176290336082141f2e84a150bb0ce8dc2db72d
-    volumes:
-      - ./:/coyote
-    command: bundle exec puma -C config/puma.rb
+  app: &app
+    build:
+      context: .
     depends_on:
       - db
-  test:
-    build: .
-    env_file: sample.env
-    environment:
-      COYOTE_TEST_DATABASE_URL: postgres://postgres:docker@db:5432/coyote_test
-      RAILS_ENV: test
-      SECRET_KEY_BASE: TEST_ONLY_09f0f5a7621eb1835061d53c0f1ebc105d4104058f5c8d42827e48abe133dbbff85b63a4b40176290336082141f2e84a150bb0ce8dc2db72d
+    environment: &environment
+      BOOTSNAP_CACHE_DIR: /bundle/bootsnap
+      DATABASE_HOST: db
+      DATABASE_URL: postgres://postgres:postgres@db:5432
+      NODE_ENV: ${NODE_ENV:-development}
+      RAILS_ENV: ${RAILS_ENV:-development}
+      WEBPACKER_DEV_SERVER_HOST: webpacker
+      WEB_CONCURRENCY: 1
+    entrypoint: ./bin/docker_entrypoint bundle exec
+    tmpfs:
+      - /tmp
     volumes:
-      - ./:/coyote
-    command: ["bundle", "exec", "rails", "db:environment:set", "db:test:prepare", "db:migrate", "spec"]
-    depends_on:
-      - db
+      - .:/coyote:cached
+      - bundle:/usr/local/bundle
+      - node_modules:/coyote/node_modules
+      - packs:/coyote/public/packs
+      - rails_cache:/coyote/tmp/cache
+    stdin_open: true
+    tty: true
 
   db:
-    image: postgres:9.6
+    image: postgres:11-alpine
+    environment:
+      POSTGRES_DB: coyote_development
+      POSTGRES_PASSWORD: postgres
     ports:
       - 5432:5432
+    volumes:
+      - postgres:/var/lib/postgresql/data
+
+  rails:
+    <<: *app
+    command: rails server -b 0.0.0.0
+    ports:
+      - 3000:3000
+
+  rspec:
+    <<: *app
+    command: rails db:create db:environment:set db:test:prepare db:migrate spec
     environment:
-      POSTGRES_DB: coyote_test
-      POSTGRES_PASSWORD: docker
+      <<: *environment
+      DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL: "true"
+      RAILS_ENV: test
+
+volumes:
+  bundle:
+  node_modules:
+  packs:
+  postgres:
+  rails_cache:
+  redis:

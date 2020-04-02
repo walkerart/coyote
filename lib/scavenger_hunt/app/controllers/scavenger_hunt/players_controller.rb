@@ -1,10 +1,9 @@
 class ScavengerHunt::PlayersController < ScavengerHunt::ApplicationController
-
   before_action :find_player
 
   def create
-    if @player.update_attributes(player_attributes)
-      @player.games.active.update_all(ended_at: Time.now)
+    if @player.update(player_attributes)
+      @player.games.active.update_all(ended_at: Time.zone.now)
       redirect_to survey_questions_path
     else
       render :new

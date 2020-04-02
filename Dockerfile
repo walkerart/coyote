@@ -1,13 +1,68 @@
-FROM ruby:2.4.1
-MAINTAINER Mike Subelsky <mike@subelsky.com>
-RUN apt-get update -qq && apt-get install -y build-essential libpq-dev nodejs software-properties-common
+# BUILD DEPENDENCIES
+FROM ruby:2.6-alpine AS build
 
-RUN add-apt-repository "deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main"
-RUN wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
-RUN apt-get update
-RUN apt-get install -y postgresql-client-9.6
+WORKDIR /coyote
+
+ENV RAILS_ENV production
+ENV RACK_ENV ${RAILS_ENV}
+ENV NODE_ENV ${RAILS_ENV}
+ENV RAILS_LOG_TO_STDOUT 1
+ENV RAILS_ROOT /coyote
+ENV BUNDLE_APP_CONFIG="$RAILS_ROOT/.bundle"
+
+RUN apk update \
+  && apk upgrade \
+  && apk add --update --no-cache \
+  build-base \
+  git \
+  libxml2-dev \
+  libxslt-dev \
+  nodejs \
+  postgresql-client \
+  postgresql-dev \
+  ruby-json \
+  tzdata \
+  yaml-dev
+
+# Install (and clean) Gem dependencies
+RUN gem install bundler:2.1.4
+ADD Gemfile* ./
+RUN bundle config --global frozen 1 \
+  && bundle config set path "vendor/bundle" \
+  && bundle config build.nokogiri --use-system-libraries \
+  && bundle install -j4 --retry 3 --path=vendor/bundle \
+  && rm -rf /usr/local/bundle/cache/*.gem \
+  && find /usr/local/bundle/gems/ -name "*.c" -delete \
+  && find /usr/local/bundle/gems/ -name "*.o" -delete
 
 ADD . /coyote
+
+# Remove unused folders
+# RUN rm -rf app/assetslog/* node_modules tmp/cache vendor/assets spec
+
+# RUN THE APP
+FROM ruby:2.6-alpine
+
 WORKDIR /coyote
-RUN gem install bundler
-RUN bundle install
+
+ENV RAILS_ENV production
+ENV RACK_ENV ${RAILS_ENV}
+ENV NODE_ENV ${RAILS_ENV}
+ENV RAILS_LOG_TO_STDOUT 1
+ENV RAILS_ROOT /coyote
+ENV BUNDLE_APP_CONFIG="$RAILS_ROOT/.bundle"
+
+RUN apk update \
+  && apk upgrade \
+  && apk add --update --no-cache \
+  libxml2 \
+  libxslt \
+  nodejs \
+  postgresql-client \
+  tzdata
+
+COPY --from=build $RAILS_ROOT $RAILS_ROOT
+
+EXPOSE 3000
+
+CMD [ "bundle", "exec", "puma", "-c", "config/puma.rb" ]

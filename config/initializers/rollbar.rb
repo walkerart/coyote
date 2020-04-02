@@ -1,8 +1,9 @@
-if ENV['ROLLBAR_ACCESS_TOKEN'].present?
+rollbar_token = Credentials.dig(:rollbar, :access_token)
+if defined?(Rollbar) && rollbar_token.present?
   Rollbar.configure do |config|
     # Without configuration, Rollbar is enabled in all environments.
     # To disable in specific environments, set config.enabled=false.
-    config.access_token = ENV['ROLLBAR_ACCESS_TOKEN']
+    config.access_token = rollbar_token
 
     # By default, Rollbar will try to call the `current_user` controller method
     # to fetch the logged-in user object, and then call that object's `id`,
@@ -23,8 +24,8 @@ if ENV['ROLLBAR_ACCESS_TOKEN'].present?
     # Valid levels: 'critical', 'error', 'warning', 'info', 'debug', 'ignore'
     # 'ignore' will cause the exception to not be reported at all.
     config.exception_level_filters.merge!({
-      'ActiveRecord::RecordNotFound'   => 'ignore',
-      'ActionController::RoutingError' => 'ignore'
+      "ActiveRecord::RecordNotFound"   => "ignore",
+      "ActionController::RoutingError" => "ignore",
     })
 
     # You can also specify a callable, which will be called with the exception instance.
