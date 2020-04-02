@@ -48,9 +48,10 @@ services:
     environment:
       DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL: "true"
       DATABASE_HOST: db
-      DATABASE_URL: postgres://db/coyote_test:5432
+      DATABASE_URL: postgres://postgres:postgres@db/coyote_test:5432
       NODE_ENV: test
       RAILS_ENV: test
+      SECRET_KEY_BASE: be5ce2d697f7f33868d60bcd8bf07a4719fad5767fa74e95fad05c6830f165dba1455e888bc9d8d2ec3e0ac9f1d3d5a5195cf8ba122abfdf7438eab45d09c997
       WEB_CONCURRENCY: 1
 
 volumes:
