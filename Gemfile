@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 source 'https://rubygems.org'
-ruby '2.4.1'
+ruby '2.5.1'
 
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
@@ -15,7 +15,7 @@ gem 'mysql2', require: false
 gem 'rails', '5.2.0'
 
 gem 'analytical' # analytics
-gem 'apipie-rails'
+gem 'apipie-rails', '0.5.10'
 gem 'audited'
 gem 'autoprefixer-rails'
 gem 'aws-sdk-s3', require: false
@@ -28,6 +28,11 @@ gem 'haml-rails', '>= 1.0.0'
 gem 'iconv'
 gem 'jquery-rails', '>= 4.0.4'
 gem 'jsonapi-rails'
+
+gem 'nio4r'
+gem 'rails-dom-testing', '~> 2.0'
+gem 'nokogiri'
+
 gem 'kaminari'
 gem 'language_list'
 gem 'lightbox2-rails', github: 'johansmitsnl/lightbox2-rails' # for resource lightboxes on index pages
