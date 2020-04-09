@@ -1,4 +1,4 @@
-class AddStatusCodeToImage < ActiveRecord::Migration
+class AddStatusCodeToImage < ActiveRecord::Migration[5.1]
   def change
     add_column :images, :status_code, :integer, default: 0
 

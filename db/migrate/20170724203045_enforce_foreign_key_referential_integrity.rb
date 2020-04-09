@@ -1,4 +1,4 @@
-class EnforceForeignKeyReferentialIntegrity < ActiveRecord::Migration
+class EnforceForeignKeyReferentialIntegrity < ActiveRecord::Migration[5.1]
   def up
     remove_foreign_key "assignments", "images"
     add_foreign_key "assignments", "images", :on_delete => :cascade, :on_update => :cascade

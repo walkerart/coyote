@@ -1,4 +1,4 @@
-class AddStrategyToWebsite < ActiveRecord::Migration
+class AddStrategyToWebsite < ActiveRecord::Migration[5.1]
   def up
     add_column :websites, :strategy, :string
     w = Website.where(title: "MCA Chicago").first

@@ -1,4 +1,4 @@
-class AddIndexToUserRole < ActiveRecord::Migration
+class AddIndexToUserRole < ActiveRecord::Migration[5.1]
   def change
     add_index :users, :role
   end

@@ -1,4 +1,4 @@
-class AddAssignmentsCountToImages < ActiveRecord::Migration
+class AddAssignmentsCountToImages < ActiveRecord::Migration[5.1]
   def change
     add_column :images, :assignments_count, :integer, default: 0
   end

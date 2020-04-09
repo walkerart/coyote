@@ -1,4 +1,4 @@
-class UpdateMcaurl < ActiveRecord::Migration
+class UpdateMcaurl < ActiveRecord::Migration[5.1]
   def change
     w = Website.where(title: "MCA Chicago").first
     if w

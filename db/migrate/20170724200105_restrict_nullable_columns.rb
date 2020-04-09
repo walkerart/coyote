@@ -1,4 +1,4 @@
-class RestrictNullableColumns < ActiveRecord::Migration
+class RestrictNullableColumns < ActiveRecord::Migration[5.1]
   def change
     change_column_null :assignments, "user_id", false
     change_column_null :assignments, "image_id", false
