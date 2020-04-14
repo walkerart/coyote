@@ -4,6 +4,11 @@ thread_count = ENV.fetch("COYOTE_NUM_THREADS",5).to_i
 workers worker_count
 threads thread_count, thread_count
 
+app_dir = File.expand_path("../..", __FILE__)
+shared_dir = "#{app_dir}/tmp"
+bind "unix://#{shared_dir}/sockets/puma.sock"
+## daemonize true
+
 tag "coyote"
 preload_app!
 
