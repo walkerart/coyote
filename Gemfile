@@ -50,7 +50,7 @@ gem 'sass-rails'
 gem 'similar_text'
 gem 'simple_form' # , git: 'https://github.com/plataformatec/simple_form.git'
 gem 'slim-rails'
-gem 'sprockets'
+gem 'sprockets', '~> 3.7.2'
 gem 'sprockets-rails'
 gem 'uglifier', '>= 2.7.1' # js compression
 gem 'vanilla-ujs'
