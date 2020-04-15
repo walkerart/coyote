@@ -45,7 +45,8 @@ Rails.application.configure do
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
    config.force_ssl = false
 
-  config.log_level = :info
+  #config.log_level = :info
+  config.log_level = :warn
 
   # Prepend all log lines with the following tags.
   # config.log_tags = [ :subdomain, :uuid ]
@@ -84,7 +85,10 @@ Rails.application.configure do
   # Send deprecation notices to registered listeners.
   config.active_support.deprecation = :notify
 
-  logger           = ActiveSupport::Logger.new(STDOUT)
+  config.log_formatter = ::Logger::Formatter.new
+
+  #logger           = ActiveSupport::Logger.new(STDOUT)
+  logger = Logger.new("log/coyote-staging.log")
   logger.formatter = config.log_formatter
   config.logger    = ActiveSupport::TaggedLogging.new(logger)
 
