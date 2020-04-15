@@ -1,5 +1,5 @@
 #!/bin/bash
 
-export $(cat .env-hybrid | xargs)
+export $(cat .env | xargs)
 puma  -C config/puma.rb
 
