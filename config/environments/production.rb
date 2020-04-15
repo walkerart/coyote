@@ -88,7 +88,7 @@ Rails.application.configure do
   config.log_formatter = ::Logger::Formatter.new
 
   #logger           = ActiveSupport::Logger.new(STDOUT)
-  logger = Logger.new("log/coyote-staging.log")
+  logger = Logger.new("log/coyote-#{Rails.env}.log")
   logger.formatter = config.log_formatter
   config.logger    = ActiveSupport::TaggedLogging.new(logger)
 
