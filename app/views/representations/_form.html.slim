@@ -9,8 +9,8 @@
       = f.input :text, as: :text, hint: 'Description text. It can be helpful to include a transcription of a non-text representation, when available.'
       = f.input :notes, as: :text, hint: 'Useful for communicating internally with other Coyote members about this representation.'
 
-      = f.association :metum, collection: available_meta
-      = f.association :endpoint, collection: endpoint_collection, include_blank: false
+      = f.association :metum, collection: available_meta, selected: "3"
+      = f.association :endpoint, collection: endpoint_collection, include_blank: false, selected: "2"
 
       = toolbar class: 'toolbar--footer' do
         = submit_toolbar_item(f)
