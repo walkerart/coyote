@@ -50,11 +50,13 @@ class Resource < ApplicationRecord
   has_one_attached :uploaded_resource
 
   scope :represented,              -> { joins(:representations).distinct }
+  scope :represented_hasnote,      -> { joins(:representations).where("representations.notes is not null").distinct }
   scope :unrepresented,            -> { left_outer_joins(:representations).where(representations: { resource_id: nil }) }
   scope :assigned,                 -> { joins(:assignments) }
   scope :unassigned,               -> { left_outer_joins(:assignments).where(assignments: { resource_id: nil }) }
   scope :assigned_unrepresented,   -> { unrepresented.joins(:assignments) }
   scope :unassigned_unrepresented, -> { unrepresented.left_outer_joins(:assignments).where(assignments: { resource_id: nil }) }
+
   scope :by_date,                  -> { order(created_at: :desc) }
   scope :by_priority,              -> { order(priority_flag: :desc) }
   scope :order_by_priority_and_date,     -> { by_priority.by_date }
@@ -77,7 +79,7 @@ class Resource < ApplicationRecord
 
   # @see https://github.com/activerecord-hackery/ransack#using-scopesclass-methods
   def self.ransackable_scopes(_ = nil)
-    %i[order_by_priority_and_date represented assigned unassigned unrepresented assigned_unrepresented unassigned_unrepresented with_approved_representations]
+    %i[order_by_priority_and_date represented represented_hasnote assigned unassigned unrepresented assigned_unrepresented unassigned_unrepresented with_approved_representations]
   end
 
   # @return [ActiveSupport::TimeWithZone] if one more resources exist, this is the created_at time for the most recently-created resource
