@@ -105,5 +105,5 @@ class RepresentationsController < ApplicationController
     authorize(representation)
   end
 
-  DEFAULT_SEARCH_PARAM = { s: 'created_at DESC' }.freeze
+  DEFAULT_SEARCH_PARAM = { s: 'resource_id ASC, created_at DESC' }.freeze
 end
