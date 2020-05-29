@@ -4,6 +4,9 @@
 //= require vendor/rollbar
 //= require vanilla-ujs
 //= require activestorage
+//= require jquery
+//= require jquery_ujs
+//= require char-count.js
 
 (function() {
   document.querySelectorAll("[data-lightbox]").forEach(function(link) {
