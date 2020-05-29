@@ -79,7 +79,7 @@ class Resource < ApplicationRecord
 
   # @see https://github.com/activerecord-hackery/ransack#using-scopesclass-methods
   def self.ransackable_scopes(_ = nil)
-    %i[order_by_priority_and_date represented represented_hasnote assigned unassigned unrepresented assigned_unrepresented unassigned_unrepresented with_approved_representations]
+    %i[order_by_priority_and_date represented assigned unassigned unrepresented assigned_unrepresented unassigned_unrepresented with_approved_representations]
   end
 
   # @return [ActiveSupport::TimeWithZone] if one more resources exist, this is the created_at time for the most recently-created resource
