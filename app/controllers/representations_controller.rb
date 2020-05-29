@@ -60,11 +60,13 @@ class RepresentationsController < ApplicationController
   attr_writer :current_organization
 
   def record_filter
+    Rails.logger.info "RECORD_FILTER: filter_params=#{filter_params}"
     @record_filter ||= RecordFilter.new(filter_params.reverse_merge(DEFAULT_SEARCH_PARAM), pagination_params, current_organization.representations)
   end
 
   def filter_params
-    params.fetch(:q, {}).permit(:s, :text_or_resource_identifier_or_resource_title_cont_all, :author_id_eq, status_in: [], metum_id_in: [])
+    has_note = params.permit(:has_note)
+    params.fetch(:q, {}).permit(:s, :has_note, :text_or_resource_identifier_or_resource_title_cont_all, :author_id_eq, status_in: [], metum_id_in: []).merge(has_note)
   end
 
   def representations_scope

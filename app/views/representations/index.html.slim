@@ -18,6 +18,13 @@
               = name
 
       .filter-set-item
+        .filter-set-item-title Attributes
+        .checkbox-list
+          label.checkbox-list-item
+            = check_box_tag "has_note"
+            = "Has Note"
+
+      .filter-set-item
         .filter-set-item-title Metum
         .checkbox-list
           - available_meta.each do |meta|

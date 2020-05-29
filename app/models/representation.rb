@@ -54,12 +54,13 @@ class Representation < ApplicationRecord
   scope :by_status, ->(descending: false) { order(Arel.sql("(case status when 'approved' then 0 when 'ready_to_review' then 1 else 2 end) #{descending ? 'DESC' : 'ASC'}")) }
   scope :by_title_length, -> { order(Arel.sql('length(text) DESC')) }
   scope :with_metum_named, ->(title) { joins(:metum).where(meta: { title: title }) }
+  scope :has_note, -> { where("notes is not null and not notes=''") }
 
   audited
 
   # @see https://github.com/activerecord-hackery/ransack#using-scopesclass-methods
   def self.ransackable_scopes(_ = nil)
-    %i[approved by_ordinality not_approved ready_to_review]
+    %i[approved by_ordinality not_approved ready_to_review has_note]
   end
 
   def to_s
